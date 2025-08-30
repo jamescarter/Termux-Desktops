@@ -16,10 +16,7 @@ Thanks to @Windows1105 for his post in Reddit: https://www.reddit.com/r/termux/c
 * First you need to install the following packages in Termux: 
 ```
 pkg update
-pkg install x11-repo
-pkg install termux-x11-nightly
-pkg install pulseaudio
-pkg install proot-distro
+pkg install x11-repo xwayland termux-x11-nightly pulseaudio proot-distro
 ```
 
 ---  
@@ -35,14 +32,13 @@ pd login alpine
 
 * Inside Alpine we are going to configure everything we need:
 ```
-echo "https://mirror.postmarketos.org/postmarketos/v22.06" >> /etc/apk/repositories
-sed -i 's/edge/v3.16/g' /etc/apk/repositories
+echo "https://mirror.postmarketos.org/postmarketos/v25.06" >> /etc/apk/repositories
 
 apk add -u --allow-untrusted postmarketos-keys
 
 apk update && apk upgrade
 
-apk add nano sudo neofetch alpine-conf
+apk add nano sudo alpine-conf
 addgroup storage
 addgroup power
 addgroup network
@@ -60,16 +56,23 @@ su user -c "sudo setup-xorg-base postmarketos-ui-plasma-mobile kde-applications-
 
 * Change the os releases: 
 ```
-echo 'PRETTY_NAME="postmarketOS v22.06"
+cat > /etc/os-release << EOF
+echo 'PRETTY_NAME="postmarketOS v25.06"
 NAME="postmarketOS"
-VERSION_ID="v22.06"
-VERSION="v22.06"
+VERSION_ID="v25.06"
+VERSION="v25.06"
 ID="postmarketos"
 ID_LIKE="alpine"
 HOME_URL="https://www.postmarketos.org/"
 SUPPORT_URL="https://gitlab.com/postmarketOS"
 BUG_REPORT_URL="https://gitlab.com/postmarketOS/pmaports/issues"
-LOGO="postmarketos-logo"' > /etc/os-release
+LOGO="postmarketos-logo"'
+EOF
+```
+
+* Exit Alpine back to Termux
+```
+exit
 ```
 
 ---  
